@@ -7,6 +7,33 @@ import 'package:go_router/go_router.dart';
 //   final String caption;
 // }
 
+class HomeMenuItem {
+  final String title;
+  final String subtitle;
+  final String url;
+  final IconData icon;
+
+  HomeMenuItem(
+      {required this.title,
+      required this.subtitle,
+      required this.url,
+      required this.icon});
+}
+
+final appHomeMenuItem = <HomeMenuItem>[
+  HomeMenuItem(
+      title: 'Rutina de los 5 días.',
+      subtitle:
+          'Rutina para las personas que se exigen un nivel de disciplina alto.',
+      url: 'runtina_5dias_screen',
+      icon: Icons.abc),
+  HomeMenuItem(
+      title: 'Rutina de los 3 días.',
+      subtitle: 'Rutina que te exigira dar lo maximo de ti .',
+      url: 'runtina_3dias_screen',
+      icon: Icons.abc),
+];
+
 // const appMenuItems = <MenuItem>[
 //     MenuItem(
 //       title: 'Cambiar tema',
@@ -29,10 +56,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const Text('Esta es la Home Screen'),
+          ListView.builder(
+            itemCount: appHomeMenuItem.length,
+            itemBuilder: (BuildContext context, index){
+              final appHomeMenuIndex = appHomeMenuItem[index];
+              return ListTile(
+                title: Text(appHomeMenuIndex.title),
+              );
+            }
+            ),
           OutlinedButton(
               onPressed: () {
                 context.go('/screen2');
