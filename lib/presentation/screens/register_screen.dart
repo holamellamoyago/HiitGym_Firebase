@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:firebase/presentation/util/TextField.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -51,37 +52,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 EmailTextField(emailController: _emailController),
                 const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-                FormBuilderTextField(
-                  controller: _passwordController,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  name: 'password',
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'password',
-                      prefixIcon: Icon(Icons.key)),
-                  validator: FormBuilderValidators.compose([
-                    FormBuilderValidators.required(
-                        errorText: 'Contrasena requerido'),
-                  ]),
-                ),
+                PasswordTextField(passwordController: _passwordController),
               ],
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            OutlinedButton(
-              onPressed: () {
-                context.push('/');
-              },
-              child: const Text('Saltar inicio de sesion'),
-            ),
-            GestureDetector(
-              onTap: _signUp,
-              child: Container(
-                child: Text('hola'),
-                decoration: BoxDecoration(
-                  color: Colors.red
-                ),
-              ),
-            ),
+            FilledButton(onPressed: _signUp, child: const Text('Crear nueva cuenta')),
             ElevatedButton(
                 onPressed: () {
                   showSnackBar(context, 'Estamos mostrando un mensaje');
@@ -93,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void _signUp() async {
+  void  _signUp() async {
     String email = _emailController.text;
     String password = _passwordController.text;
 
@@ -108,29 +83,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 }
 
-class EmailTextField extends StatelessWidget {
-  const EmailTextField({
-    super.key,
-    required TextEditingController emailController,
-  }) : _emailController = emailController;
 
-  final TextEditingController _emailController;
-
-  @override
-  Widget build(BuildContext context) {
-    return FormBuilderTextField(
-      controller: _emailController,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      keyboardType: TextInputType.emailAddress,
-      name: 'email',
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Email',
-          prefixIcon: Icon(Icons.person)),
-      validator: FormBuilderValidators.compose([
-        FormBuilderValidators.required(errorText: 'Usuario requerido'),
-        FormBuilderValidators.email(errorText: 'Debe ingresar un correo valido')
-      ]),
-    );
-  }
-}

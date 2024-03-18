@@ -1,10 +1,29 @@
+import 'package:firebase/configure/auth/auth.dart';
+import 'package:firebase/presentation/util/TextField.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:firebase/presentation/util/snackbar.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   static const name = 'login_screen';
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final FirebaseauthService _auth = FirebaseauthService();
+
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,68 +37,40 @@ class LoginPage extends StatelessWidget {
             height: 200,
           ),
           const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-          const _Mail_and_Password(),
+          EmailTextField(emailController: _emailController),
           const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-          OutlinedButton(
-            onPressed: () {
-              context.push('/');
-            },
-            child: const Text('Saltar inicio de sesion'),
-          ),
+          PasswordTextField(passwordController: _passwordController),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-          FilledButton(
-              onPressed: () {
-                context.push('/register_screen');
-              },
-              child: const Text('Registro')),
-          FilledButton(
-              onPressed: () {
-                context.push('/');
-              },
-              child: const Text('Iniciar sesion')),
+              FilledButton(
+                  onPressed: () {
+                    context.push('/register_screen');
+                  },
+                  child: const Text('Registro')),
+              FilledButton(
+                  onPressed: () {
+                    _sigIn();
+                  },
+                  child: const Text('Iniciar sesion')),
             ],
-          ),
-
-          ElevatedButton(
-              onPressed: () {
-                showSnackBar(context, 'Estamos mostrando un mensaje');
-              },
-              child: const Text('SnackBar'))
+          )
         ],
       )),
     );
   }
-}
 
-class _Mail_and_Password extends StatelessWidget {
-  const _Mail_and_Password();
+  void _sigIn() async {
+    String email = _emailController.text;
+    String password = _passwordController.text;
 
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-        width: 300,
-        child: Column(
-          children: [
-            Text(
-              'Login',
-              style: TextStyle(fontSize: 24),
-            ),
-            TextField(
-              autocorrect: true,
-              obscureText: false,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Email'),
-            ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            TextField(
-              autocorrect: true,
-              obscureText: true,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(), labelText: 'Password'),
-            ),
-          ],
-        ));
+    User? user = await _auth.createWithEmailAndPassword(email, password);
+
+    if (user != null) {
+      print('El usuario inicio sesion correctamente');
+      context.push('/');
+    } else {
+      print('No consiguio iniciar sesion');
+    }
   }
 }
