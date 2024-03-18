@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User? user = await _auth.createWithEmailAndPassword(email, password);
+    User? user = await _auth.sigInWithEmailAndPassword(email, password);
 
     if (user != null) {
       print('El usuario inicio sesion correctamente');

@@ -16,4 +16,12 @@ class PreferenciasUsuario {
   set ultimaPagina(String value) {
     prefs.setString('name', value);
   }
+
+  String get ultimouid {
+    return prefs.getString('ultimouid') ?? '';
+  }
+
+    set ultimouid(String value) {
+    prefs.setString('ultimouid', value);
+  }
 }

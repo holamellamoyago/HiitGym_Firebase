@@ -1,6 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase/presentation/preferences/pref_usuarios.dart';
 import 'package:firebase/presentation/util/TextField.dart';
+import 'package:firebase/presentation/util/diferents.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -37,10 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/logo(1).jpg',
-              height: 200,
-            ),
+            const ImagenLogo(),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
             Column(
               children: [
@@ -54,7 +54,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ],
             ),
             const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-            FilledButton(onPressed: _signUp, child: const Text('Crear nueva cuenta')),
+            FilledButton(
+                onPressed: _signUp, child: const Text('Crear nueva cuenta')),
             ElevatedButton(
                 onPressed: () {
                   showSnackBar(context, 'Estamos mostrando un mensaje');
@@ -66,19 +67,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  void  _signUp() async {
+  void _signUp() async {
     String email = _emailController.text;
     String password = _passwordController.text;
+    var prefs = PreferenciasUsuario();
 
-    User? user = await _auth.singnUpWithEmailAndPassword(email, password);
+    User? user = await _auth.createAcountWithEmailAndPassword(email, password);
 
     if (user != null) {
       print('El usuario inicio sesion correctamente');
       context.push('/');
+      prefs.ultimouid = user.uid;
+      FirebaseFirestore.instance
+          .collection('User')
+          .doc(user.uid).set
+          
+          
+          ({'email': email, 'password': password});
     } else {
       print('No consiguio iniciar sesion');
     }
   }
 }
-
-
