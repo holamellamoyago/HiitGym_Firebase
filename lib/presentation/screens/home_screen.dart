@@ -27,14 +27,19 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var prefs = PreferenciasUsuario();
 
-    return const Scaffold(
-      body:
-    );
+    return Scaffold(
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+          Text('Esto es una column'),
+          Expanded(child: _List())
+        ],));
   }
 }
 
 class _List extends StatelessWidget {
-  _List({
+  const _List({
     super.key,
   });
 
@@ -44,12 +49,10 @@ class _List extends StatelessWidget {
       itemCount: appHomeMenuItem.length,
       itemBuilder: ((context, index) {
         final homeMenuIndex = appHomeMenuItem[index];
-        return const Column(
-          children: [
-            Text('h0a'),
-            Text('h0a'),
+        return Column(
+          children: [ 
             ListTile(
-              title: Text('hola'),
+              title: Text(homeMenuIndex.title),
             )
           ],
         );
