@@ -16,6 +16,7 @@ class PasswordTextField extends StatelessWidget {
       controller: _passwordController,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       name: 'password',
+      obscureText: true,
       decoration: const InputDecoration(
           border: OutlineInputBorder(),
           labelText: 'password',
