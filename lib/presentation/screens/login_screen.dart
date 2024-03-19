@@ -1,4 +1,5 @@
 import 'package:firebase/configure/auth/auth.dart';
+import 'package:firebase/presentation/preferences/pref_usuarios.dart';
 import 'package:firebase/presentation/util/TextField.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,12 +68,14 @@ class _LoginPageState extends State<LoginPage> {
   void _sigIn() async {
     String email = _emailController.text;
     String password = _passwordController.text;
+    var prefs = PreferenciasUsuario();
 
     User? user = await _auth.sigInWithEmailAndPassword(email, password);
 
     if (user != null) {
       print('El usuario inicio sesion correctamente');
       context.push('/');
+      prefs.ultimaPagina = '/';
       showSnackBar(context, 'Inicio sesion correctamente');
     } else {
       print('No consiguio iniciar sesion');

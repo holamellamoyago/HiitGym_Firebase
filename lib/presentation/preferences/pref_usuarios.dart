@@ -10,11 +10,11 @@ class PreferenciasUsuario {
   }
 
   String get ultimaPagina {
-    return prefs.getString('name') ?? '/testing_screen';
+    return prefs.getString('ultimaPagina') ?? '/tutorial_screen';
   }
 
   set ultimaPagina(String value) {
-    prefs.setString('name', value);
+    prefs.setString('ultimaPagina', value);
   }
 
   String get ultimouid {
