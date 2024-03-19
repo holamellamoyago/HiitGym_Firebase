@@ -1,3 +1,4 @@
+import 'package:firebase/infrastructure/helpers/the_5_dias_helper.dart';
 import 'package:firebase/presentation/preferences/pref_usuarios.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,14 +16,58 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var prefs = PreferenciasUsuario();
 
-    return const Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-          Text('Esto es una column'),
-          Expanded(child: _List())
-        ],));
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TituloText(prefs: prefs),
+              _SubtitleText(),
+              Text('Esto es una column'),
+              Expanded(child: _List())
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SubtitleText extends StatelessWidget {
+  const _SubtitleText({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Text('Boxeador', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: colors.primary),);
+  }
+}
+
+class TituloText extends StatelessWidget {
+  const TituloText({
+    super.key,
+    required this.prefs,
+  });
+
+  final PreferenciasUsuario prefs;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return Row(
+      children: [
+        const Text(
+          'Hola ',
+          style: TextStyle(fontSize: 42),
+        ),
+        Text(prefs.username,
+            style: TextStyle(fontSize: 42, color: colors.primary)),
+      ],
+    );
   }
 }
 
@@ -38,7 +83,7 @@ class _List extends StatelessWidget {
       itemBuilder: ((context, index) {
         final homeMenuIndex = appHomeMenuItem[index];
         return Column(
-          children: [ 
+          children: [
             ListTile(
               title: Text(homeMenuIndex.title),
             )
