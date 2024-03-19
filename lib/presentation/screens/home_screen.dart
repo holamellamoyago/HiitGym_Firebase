@@ -2,18 +2,6 @@ import 'package:firebase/presentation/preferences/pref_usuarios.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-// class HomeMenuItem {
-//   final String title;
-//   final String caption;
-// }
-
-// const appMenuItems = <MenuItem>[
-//     MenuItem(
-//       title: 'Cambiar tema',
-//       subtitle: 'Cambiar tema de la aplicacion',
-//       link: '/theme-changer',
-//       icon: Icons.color_lens_outlined),
-
 class HomeScreen extends StatefulWidget {
   static const name = '/';
   const HomeScreen({super.key});
@@ -27,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var prefs = PreferenciasUsuario();
 
-    return Scaffold(
+    return const Scaffold(
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,

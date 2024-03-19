@@ -8,7 +8,7 @@ import 'package:firebase/presentation/screens/rutinas/the_5dias_Screen.dart';
 final prefs = PreferenciasUsuario();
 
 final appRouter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/register_screen',
   routes: [
     GoRoute(
         path: '/',

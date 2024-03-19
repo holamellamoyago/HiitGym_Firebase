@@ -24,4 +24,11 @@ class PreferenciasUsuario {
     set ultimouid(String value) {
     prefs.setString('ultimouid', value);
   }
+  String get username {
+    return prefs.getString('username') ?? '';
+  }
+
+    set username(String value) {
+    prefs.setString('username', value);
+  }
 }

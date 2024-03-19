@@ -55,3 +55,29 @@ class EmailTextField extends StatelessWidget {
     );
   }
 }
+
+
+class UsernameTextField extends StatelessWidget {
+  const UsernameTextField({
+    super.key,
+    required TextEditingController usernameController,
+  }) : _usernameController = usernameController;
+
+  final TextEditingController _usernameController;
+
+  @override
+  Widget build(BuildContext context) {
+    return FormBuilderTextField(
+      controller: _usernameController,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      name: 'username',
+      decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Introduce tu usuario',
+          prefixIcon: Icon(Icons.person)),
+      validator: FormBuilderValidators.compose([
+        FormBuilderValidators.required(errorText: 'Usuario requerido'),
+      ]),
+    );
+  }
+}
