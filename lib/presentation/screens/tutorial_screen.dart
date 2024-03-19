@@ -16,17 +16,17 @@ final slides = <SlideInfo>[
   SlideInfo(
       'Busca tu entreno personalizado',
       'Officia nulla non laborum reprehenderit ea in est laborum. Est labore cupidatat do dolor id irure sint veniam non anim excepteur. Duis ullamco do aliqua velit consequat cupidatat fugiat do irure laborum adipisicing pariatur proident adipisicing. Ex nisi ad cillum reprehenderit mollit sunt est quis commodo dolor mollit pariatur. Proident commodo occaecat amet fugiat proident qui.',
-      '',
+      'assets/presentacion1.png',
       1),
   SlideInfo(
       'Sigue tu propio ritmo',
       'Officia nulla non laborum reprehenderit ea in est laborum. Est labore cupidatat do dolor id irure sint veniam non anim excepteur. Duis ullamco do aliqua velit consequat cupidatat fugiat do irure laborum adipisicing pariatur proident adipisicing. Ex nisi ad cillum reprehenderit mollit sunt est quis commodo dolor mollit pariatur. Proident commodo occaecat amet fugiat proident qui.',
-      '',
+      'assets/presentacion2.png',
       2),
   SlideInfo(
       'Sube tus propios TikGyms',
       'Officia nulla non laborum reprehenderit ea in est laborum. Est labore cupidatat do dolor id irure sint veniam non anim excepteur. Duis ullamco do aliqua velit consequat cupidatat fugiat do irure laborum adipisicing pariatur proident adipisicing. Ex nisi ad cillum reprehenderit mollit sunt est quis commodo dolor mollit pariatur. Proident commodo occaecat amet fugiat proident qui.',
-      '',
+      'assets/presentacion3.png',
       3),
 ];
 
@@ -63,7 +63,19 @@ class _TutorialScreenState extends State<TutorialScreen> {
     return Scaffold(
         body: Stack(
       children: [
-        _Slides(pageviewController: pageviewController),
+        PageView(
+      controller: pageviewController,
+      physics: const BouncingScrollPhysics(),
+      children: slides
+          .map(
+            (slideData) => _Slide(
+                title: slideData.title,
+                caption: slideData.caption,
+                imageURL: slideData.imageURL,
+                id: slideData.id),
+          )
+          .toList(),
+    ),
         endReached ? const _ButtonLogin() : const SizedBox()
       ],
     ));
@@ -91,31 +103,19 @@ class _ButtonLogin extends StatelessWidget {
   }
 }
 
-class _Slides extends StatelessWidget {
-  const _Slides({
-    super.key,
-    required this.pageviewController,
-  });
+// class _Slides extends StatelessWidget {
+//   const _Slides({
+//     super.key,
+//     required this.pageviewController,
+//   });
 
-  final PageController pageviewController;
+//   final PageController pageviewController;
 
-  @override
-  Widget build(BuildContext context) {
-    return PageView(
-      controller: pageviewController,
-      physics: const BouncingScrollPhysics(),
-      children: slides
-          .map(
-            (slideData) => _Slide(
-                title: slideData.title,
-                caption: slideData.caption,
-                imageURL: slideData.imageURL,
-                id: slideData.id),
-          )
-          .toList(),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return 
+//   }
+// }
 
 class _Slide extends StatelessWidget {
   final String title;
