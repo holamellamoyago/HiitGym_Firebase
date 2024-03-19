@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/infrastructure/helpers/the_5_dias_helper.dart';
 import 'package:firebase/presentation/preferences/pref_usuarios.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,13 +26,98 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TituloText(prefs: prefs),
-              _SubtitleText(),
-              Text('Esto es una column'),
-              Expanded(child: _List())
+              const _SubtitleText(),
+              const Text('Firebase Firestore'),
+              // Se utilizan los snapshots para traer datos varias veces , con el GET solo tendriamos que cambiar el stream por un future.
+              const _ListaUsuarios(),
+              const Text('Solo uno'),
+              _NombreUsuario(prefs: prefs),
+              const Expanded(child: _List())
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class _NombreUsuario extends StatelessWidget {
+  const _NombreUsuario({
+    super.key,
+    required this.prefs,
+  });
+
+  final PreferenciasUsuario prefs;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: FirebaseFirestore.instance
+          .collection('User')
+          .doc(prefs.ultimouid)
+          .get(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          final _data = snapshot.data.data();
+          if (_data!.isNotEmpty) {
+            return Column(
+              children: [
+                Text(_data['username'])
+              ],
+            );
+          } else {
+            return Placeholder();
+          }
+        }
+      },
+    );
+  }
+}
+
+class _ListaUsuarios extends StatelessWidget {
+  const _ListaUsuarios({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance
+          .collection('User')
+          // .doc(prefs.ultimouid)
+          .snapshots(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          final _data = snapshot.data?.docs;
+          if (_data!.isNotEmpty) {
+            return Column(
+              children: [
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: _data.length,
+                    itemBuilder: (context, index) {
+                      if (_data.isNotEmpty) {
+                        return Text(_data[index]['username']);
+                      } else {
+                        Placeholder();
+                      }
+                    }),
+              ],
+            );
+          } else {
+            return Placeholder();
+          }
+        }
+      },
     );
   }
 }
@@ -43,7 +130,11 @@ class _SubtitleText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    return Text('Boxeador', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: colors.primary),);
+    return Text(
+      'Boxeador',
+      style: TextStyle(
+          fontWeight: FontWeight.bold, fontSize: 18, color: colors.primary),
+    );
   }
 }
 
