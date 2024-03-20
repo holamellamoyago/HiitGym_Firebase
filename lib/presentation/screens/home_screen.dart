@@ -65,9 +65,7 @@ class _NombreUsuario extends StatelessWidget {
           final _data = snapshot.data.data();
           if (_data!.isNotEmpty) {
             return Column(
-              children: [
-                Text(_data['username'])
-              ],
+              children: [Text(_data['username'])],
             );
           } else {
             return Placeholder();
@@ -96,17 +94,17 @@ class _ListaUsuarios extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
-          final _data = snapshot.data?.docs;
-          if (_data!.isNotEmpty) {
+          final _data2 = snapshot.data?.docs;
+          if (_data2!.isNotEmpty) {
             return Column(
               children: [
                 ListView.builder(
                     shrinkWrap: true,
                     physics: const BouncingScrollPhysics(),
-                    itemCount: _data.length,
+                    itemCount: _data2.length,
                     itemBuilder: (context, index) {
-                      if (_data.isNotEmpty) {
-                        return Text(_data[index]['username']);
+                      if (_data2.isNotEmpty) {
+                        return Text(_data2[index]['username']);
                       } else {
                         Placeholder();
                       }
