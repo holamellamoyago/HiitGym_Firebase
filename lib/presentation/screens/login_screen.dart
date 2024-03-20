@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
       print('El usuario inicio sesion correctamente');
       context.push('/');
       prefs.ultimaPagina = '/';
+      prefs.ultimouid = user.uid;
       showSnackBar(context, 'Inicio sesion correctamente');
     } else {
       print('No consiguio iniciar sesion');

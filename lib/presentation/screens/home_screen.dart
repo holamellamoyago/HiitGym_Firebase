@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase/configure/auth/auth.dart';
 import 'package:firebase/infrastructure/helpers/the_5_dias_helper.dart';
 import 'package:firebase/presentation/preferences/pref_usuarios.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final FirebaseauthService _auth = FirebaseauthService();
     var prefs = PreferenciasUsuario();
 
     return Scaffold(
@@ -62,12 +64,10 @@ class _NombreUsuario extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
-          final _data = snapshot.data.data();
-          if (_data!.isNotEmpty) {
+          final _data2 = snapshot.data.data();
+          if (_data2!.isNotEmpty) {
             return Column(
-              children: [
-                Text(_data['username'])
-              ],
+              children: [Text(_data2['username'])],
             );
           } else {
             return Placeholder();
