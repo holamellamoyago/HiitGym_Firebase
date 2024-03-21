@@ -58,7 +58,20 @@ class _LoginPageState extends State<LoginPage> {
                     },
                     child: const Text('Iniciar sesion')),
               ],
-            )
+            ),
+            FilledButton(
+                onPressed: () async {
+                  try {
+                    final user = await _auth.loginGoogle();
+                    if (user != null) {
+                      context.go('/');
+                    }
+                  } on FirebaseAuthException catch (e) {
+                    print(e.message);
+                    // showSnackBar(context, e.message?? 'Algo salio mal');
+                  }
+                },
+                child: const Text('Google'))
           ],
         )),
       ),
@@ -82,5 +95,9 @@ class _LoginPageState extends State<LoginPage> {
       print('No consiguio iniciar sesion');
       showSnackBar(context, 'Error de contraseña o mail ');
     }
+  }
+
+  void _sigInGoogle() async {
+
   }
 }

@@ -67,11 +67,7 @@ class _NombreUsuario extends StatelessWidget {
           final _data2 = snapshot.data.data();
           if (_data2!.isNotEmpty) {
             return Column(
-<<<<<<< HEAD
               children: [Text(_data2['username'])],
-=======
-              children: [Text(_data['username'])],
->>>>>>> 19e46fa421b324be6541a886c3de494f05bb040f
             );
           } else {
             return Placeholder();
@@ -114,6 +110,7 @@ class _ListaUsuarios extends StatelessWidget {
                       } else {
                         Placeholder();
                       }
+                      return Placeholder();
                     }),
               ],
             );

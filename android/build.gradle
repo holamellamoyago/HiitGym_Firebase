@@ -1,8 +1,14 @@
+buildscript {
+}
+
 allprojects {
     repositories {
         google()
         mavenCentral()
     }
+
+    // dependencies {
+    // }
 }
 
 rootProject.buildDir = '../build'
@@ -16,3 +22,6 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+
+
