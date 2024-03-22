@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/configure/auth/auth.dart';
 import 'package:firebase/infrastructure/helpers/the_5_dias_helper.dart';
 import 'package:firebase/presentation/preferences/pref_usuarios.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
@@ -29,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               TituloText(prefs: prefs),
               const _SubtitleText(),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+              const _HomeScreenCards(),
               const Text('Firebase Firestore'),
               // Se utilizan los snapshots para traer datos varias veces , con el GET solo tendriamos que cambiar el stream por un future.
               const _ListaUsuarios(),
@@ -40,6 +43,70 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+}
+
+class _HomeScreenCards extends StatelessWidget {
+  const _HomeScreenCards({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String title1 = 'Horarios';
+    String subtitle1 = 'Consulta nuestros horarios';
+    IconData icon1 = Icons.calendar_month;
+
+    String title2 = 'Apuntarse';
+    String subtitle2 = 'Recuerda apuntarte antes de asistir !';
+    IconData icon2 = Icons.fitness_center;
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        _Card1HomeScreen(title1: title1, subtitle1: subtitle1, icon1: icon1),
+        _Card1HomeScreen(title1: title2, subtitle1: subtitle2, icon1: icon2),
+      ],
+    );
+  }
+}
+
+class _Card1HomeScreen extends StatelessWidget {
+  const _Card1HomeScreen({
+    super.key,
+    required this.title1,
+    required this.subtitle1,
+    required this.icon1,
+  });
+
+  final String title1;
+  final String subtitle1;
+  final IconData icon1;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: Card.filled(
+          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 4,
+        ),
+        child: Column(
+          children: [
+            Text(
+              title1,
+              style: const TextStyle(fontSize: 24),
+            ),
+            Text(subtitle1),
+            Icon(
+              icon1,
+              size: 50,
+            )
+          ],
+        ),
+      ),
+    ));
   }
 }
 
@@ -67,14 +134,10 @@ class _NombreUsuario extends StatelessWidget {
           final _data2 = snapshot.data.data();
           if (_data2!.isNotEmpty) {
             return Column(
-<<<<<<< HEAD
               children: [Text(_data2['username'])],
-=======
-              children: [Text(_data['username'])],
->>>>>>> 19e46fa421b324be6541a886c3de494f05bb040f
             );
           } else {
-            return Placeholder();
+            return const Placeholder();
           }
         }
       },
@@ -112,13 +175,13 @@ class _ListaUsuarios extends StatelessWidget {
                       if (_data2.isNotEmpty) {
                         return Text(_data2[index]['username']);
                       } else {
-                        Placeholder();
+                        const Placeholder();
                       }
                     }),
               ],
             );
           } else {
-            return Placeholder();
+            return const Placeholder();
           }
         }
       },
@@ -173,16 +236,29 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final titleStyleLarge = Theme.of(context).textTheme.titleLarge;
+    final subtitleStyleSmall = Theme.of(context).textTheme.bodyMedium;
     return ListView.builder(
       itemCount: appHomeMenuItem.length,
       itemBuilder: ((context, index) {
         final homeMenuIndex = appHomeMenuItem[index];
-        return Column(
-          children: [
-            ListTile(
-              title: Text(homeMenuIndex.title),
-            )
-          ],
+        return GestureDetector(
+          onTap: () => context.push(homeMenuIndex.url),
+          child: Column(
+            children: [
+              ListTile(
+                title: Text(
+                  homeMenuIndex.title,
+                  style: titleStyleLarge,
+                ),
+                subtitle: Text(
+                  homeMenuIndex.subtitle,
+                  style: subtitleStyleSmall,
+                ),
+                trailing: const Icon(Icons.arrow_forward),
+              )
+            ],
+          ),
         );
       }),
     );
@@ -207,7 +283,7 @@ final appHomeMenuItem = <HomeMenuItem>[
       title: 'Rutina de los 5 días.',
       subtitle:
           'Rutina para las personas que se exigen un nivel de disciplina alto.',
-      url: '/runtina_5dias_screen',
+      url: '/screen2',
       icon: Icons.abc),
   HomeMenuItem(
       title: 'Rutina de los 3 días.',
