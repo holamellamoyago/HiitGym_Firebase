@@ -1,6 +1,8 @@
+import 'dart:ui';
+
+import 'package:blur/blur.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/configure/auth/auth.dart';
-import 'package:firebase/infrastructure/helpers/the_5_dias_helper.dart';
 import 'package:firebase/presentation/preferences/pref_usuarios.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,20 +27,27 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TituloText(prefs: prefs),
-              const _SubtitleText(),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
-              const _HomeScreenCards(),
-              const Text('Firebase Firestore'),
-              // Se utilizan los snapshots para traer datos varias veces , con el GET solo tendriamos que cambiar el stream por un future.
-              const _ListaUsuarios(),
-              const Text('Solo uno'),
-              _NombreUsuario(prefs: prefs),
-              const Expanded(child: _List())
-            ],
+          child: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(image: AssetImage('assets/logo.png'))),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TituloText(prefs: prefs),
+                  const _SubtitleText(),
+                  const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
+                  const _HomeScreenCards(),
+                  // const Text('Firebase Firestore'),
+                  // Se utilizan los snapshots para traer datos varias veces , con el GET solo tendriamos que cambiar el stream por un future.
+                  // const _ListaUsuarios(),
+                  // const Text('Solo uno'),
+                  // _NombreUsuario(prefs: prefs),
+                  Expanded(child: _List())
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -86,7 +95,8 @@ class _Card1HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
         child: Card.filled(
-          shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10))),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 8,
@@ -177,6 +187,7 @@ class _ListaUsuarios extends StatelessWidget {
                       } else {
                         const Placeholder();
                       }
+                      return const Placeholder();
                     }),
               ],
             );
@@ -256,7 +267,8 @@ class _List extends StatelessWidget {
                   style: subtitleStyleSmall,
                 ),
                 trailing: const Icon(Icons.arrow_forward),
-              )
+              ),
+              
             ],
           ),
         );
