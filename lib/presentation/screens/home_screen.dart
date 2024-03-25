@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TituloText(prefs: prefs),
+                  HeaderHomeScreen(prefs: prefs),
                   // const _SubtitleText(),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                   const _HomeScreenCards(),
@@ -176,8 +176,8 @@ class _ListaUsuarios extends StatelessWidget {
 //   }
 // }
 
-class TituloText extends StatelessWidget {
-  const TituloText({
+class HeaderHomeScreen extends StatelessWidget {
+  const HeaderHomeScreen({
     super.key,
     required this.prefs,
   });
@@ -188,22 +188,37 @@ class TituloText extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            const Text(
-              'Hola ',
-              style: TextStyle(fontSize: 42),
-            ),
-            GetUsername(prefs: prefs, colors: colors),
-          ],
-        ),
-      ],
-    );
+      Row(
+        children: [
+          const Text(
+            'Hola ',
+            style: TextStyle(fontSize: 42),
+          ),
+          GetUsername(prefs: prefs, colors: colors),
+        ],
+      ),
+      FutureBuilder(
+        future: FirebaseFirestore.instance
+            .collection('User')
+            .doc(prefs.ultimouid)
+            .get(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const CircularProgressIndicator();
+          } else {
+            final _data = snapshot.data?.data();
+            if (_data!.isNotEmpty) {
+              return Text(_data['subscription'], style: TextStyle(color: colors.primary, fontWeight: FontWeight.bold, fontSize: 18));
+            }
+            return Placeholder();
+          }
+        },
+      ),
+    ]);
   }
 }
-
-
 
 class _List extends StatelessWidget {
   const _List({
