@@ -1,12 +1,8 @@
 import 'dart:ui';
-
-import 'package:blur/blur.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase/configure/auth/auth.dart';
-import 'package:firebase/presentation/preferences/pref_usuarios.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase/presentation/screens_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -29,14 +25,15 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
           child: Container(
             decoration: const BoxDecoration(
-                image: DecorationImage(image: AssetImage('assets/logo.png'))),
+                image: DecorationImage(
+                    image: AssetImage('assets/logo.png'), scale: 1.2)),
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   TituloText(prefs: prefs),
-                  const _SubtitleText(),
+                  // const _SubtitleText(),
                   const Padding(padding: EdgeInsets.symmetric(vertical: 4)),
                   const _HomeScreenCards(),
                   // const Text('Firebase Firestore'),
@@ -72,51 +69,10 @@ class _HomeScreenCards extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        _Card1HomeScreen(title1: title1, subtitle1: subtitle1, icon1: icon1),
-        _Card1HomeScreen(title1: title2, subtitle1: subtitle2, icon1: icon2),
+        CardHomeScreen(title1: title1, subtitle1: subtitle1, icon1: icon1),
+        CardHomeScreen(title1: title2, subtitle1: subtitle2, icon1: icon2),
       ],
     );
-  }
-}
-
-class _Card1HomeScreen extends StatelessWidget {
-  const _Card1HomeScreen({
-    super.key,
-    required this.title1,
-    required this.subtitle1,
-    required this.icon1,
-  });
-
-  final String title1;
-  final String subtitle1;
-  final IconData icon1;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        child: Card.filled(
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10))),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8,
-          vertical: 4,
-        ),
-        child: Column(
-          children: [
-            Text(
-              title1,
-              style: const TextStyle(fontSize: 24),
-            ),
-            Text(subtitle1),
-            Icon(
-              icon1,
-              size: 50,
-            )
-          ],
-        ),
-      ),
-    ));
   }
 }
 
@@ -144,7 +100,11 @@ class _NombreUsuario extends StatelessWidget {
           final _data2 = snapshot.data.data();
           if (_data2!.isNotEmpty) {
             return Column(
-              children: [Text(_data2['username'])],
+              children: [
+                Text(
+                  _data2['username'],
+                ),
+              ],
             );
           } else {
             return const Placeholder();
@@ -200,21 +160,21 @@ class _ListaUsuarios extends StatelessWidget {
   }
 }
 
-class _SubtitleText extends StatelessWidget {
-  const _SubtitleText({
-    super.key,
-  });
+// class _SubtitleText extends StatelessWidget {
+//   const _SubtitleText({
+//     super.key,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-    return Text(
-      'Boxeador',
-      style: TextStyle(
-          fontWeight: FontWeight.bold, fontSize: 18, color: colors.primary),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     final colors = Theme.of(context).colorScheme;
+//     return Text(
+//       'Boxeador',
+//       style: TextStyle(
+//           fontWeight: FontWeight.bold, fontSize: 18, color: colors.primary),
+//     );
+//   }
+// }
 
 class TituloText extends StatelessWidget {
   const TituloText({
@@ -227,18 +187,23 @@ class TituloText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    return Row(
+    return Column(
       children: [
-        const Text(
-          'Hola ',
-          style: TextStyle(fontSize: 42),
+        Row(
+          children: [
+            const Text(
+              'Hola ',
+              style: TextStyle(fontSize: 42),
+            ),
+            GetUsername(prefs: prefs, colors: colors),
+          ],
         ),
-        Text(prefs.username,
-            style: TextStyle(fontSize: 42, color: colors.primary)),
       ],
     );
   }
 }
+
+
 
 class _List extends StatelessWidget {
   const _List({
@@ -268,7 +233,6 @@ class _List extends StatelessWidget {
                 ),
                 trailing: const Icon(Icons.arrow_forward),
               ),
-              
             ],
           ),
         );

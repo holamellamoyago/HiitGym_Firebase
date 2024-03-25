@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   animate_do: ^3.3.4
-  blur: ^3.1.0
   cloud_firestore: ^4.15.9
   dio: ^5.4.1
   firebase_auth: ^4.17.9

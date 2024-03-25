@@ -87,10 +87,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       prefs.ultimouid = user.uid;
       prefs.username = username;
       prefs.ultimaPagina = '/';
-      FirebaseFirestore.instance
-          .collection('User')
-          .doc(user.uid)
-          .set({'email': email, 'password': password, 'username': username});
+      FirebaseFirestore.instance.collection('User').doc(user.uid).set({
+        'email': email,
+        'password': password,
+        'username': username,
+        'subscription': 'Tarifa básica'
+      });
     } else {
       print('No consiguio iniciar sesion');
     }
